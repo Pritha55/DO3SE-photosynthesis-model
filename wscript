@@ -28,10 +28,26 @@ def configure(ctx):
 
 def build(ctx):
     print('Building')
+    print('Build Mocks')
+    ctx(features='fc',
+        source='src/mocked_functions.F90',
+        target='modules',
+        use='LAPACK C_API')
+
+    print('Build B')
+
+    ctx(features='fc',
+        source=ctx.path.ant_glob('src/*_ml.F90'),
+        target='modules',
+        use='LAPACK C_API')
+
     ctx(features='fc',
         source=ctx.path.ant_glob('src/*_ml.f90'),
         target='modules',
         use='LAPACK C_API')
+
+    print('Build C')
+
     ctx(features='fc fcprogram',
         source='src/main.f90',
         target='run_model',
