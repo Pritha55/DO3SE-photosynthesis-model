@@ -1,0 +1,91 @@
+&DO3SE_LandCover
+
+name = "Spanish Wheat"
+
+season%growing_season_method = "constant"
+season%SGS = 118
+season%EGS = 210
+
+season%accumulation_period_method = "constant"
+season%Astart = 153
+season%Aend = 208
+
+season%height_method = "constant"
+season%height = 1.0
+
+season%LAI_method = "day PLF"
+season%LAI_a = 0.0
+season%LAI_b = 3.5
+season%LAI_c = 3.5
+season%LAI_d = 0.0
+season%LAI_1 = 21
+season%LAI_2 = 21
+
+season%SAI_method = "wheat"
+
+gsto%fmin = 0.01
+gsto%gmax = 450.0
+
+gsto%method = "photosynthesis"
+pn_gsto%g_sto_0 = 20000.0
+pn_gsto%m = 8.12
+pn_gsto%v_cmax_25 = 180.0
+pn_gsto%j_max_25 = 400.0
+
+gsto%f_phen_method = "simple day PLF"
+gsto%f_phen_a = 0.1
+gsto%f_phen_c = 1.0
+gsto%f_phen_e = 0.1
+gsto%f_phen_1 = 0
+gsto%f_phen_4 = 45
+
+gsto%leaf_f_phen_method = "day PLF"
+gsto%leaf_f_phen_a = 0.8
+gsto%leaf_f_phen_b = 1.0
+gsto%leaf_f_phen_c = 0.2
+gsto%leaf_f_phen_1 = 15
+gsto%leaf_f_phen_2 = 40
+
+gsto%f_light_method = "enabled"
+gsto%f_lightfac = 0.0105
+
+gsto%f_temp_method = "default"
+gsto%T_min = 12.0
+gsto%T_opt = 26.0
+gsto%T_max = 40.0
+
+gsto%f_VPD_method = "linear"
+gsto%VPD_min = 3.2
+gsto%VPD_max = 1.2
+
+gsto%f_SW_method = "fSWP exp"
+gsto%fSWP_exp_curve = "temperate"
+
+gsto%f_O3_method = "wheat"
+
+gsto%VPD_crit = 1000.0
+
+Lm = 0.02
+
+Y = 6.0
+
+/
+
+
+&DO3SE_Config
+
+location%lat = 40.43
+location%lon = -3.7
+location%elev = 20
+location%albedo = 0.2
+location%Rsoil = 200
+
+location%OTC = .false.
+location%z_u = 1.0
+location%z_O3 = 50.0
+
+SMD%soil_texture = "loam"
+SMD%root = 0.75
+SMD%source = "P-M"
+
+/

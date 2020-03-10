@@ -1,0 +1,120 @@
+{
+    "LC_config": {
+        "nl": 1, 
+        "nlc": 1, 
+        "primary_lc": 1, 
+        "lcs": [
+            {
+                "name": "Spanish Wheat",
+                "season": {
+                    "growing_season_method": "constant",
+                    "sgs": 118,
+                    "egs": 210,
+                    "accumulation_period_method": "constant",
+                    "astart": 153,
+                    "aend": 208,
+                    "lai_a": 0.0,
+                    "lai_b": 3.5,
+                    "lai_c": 3.5,
+                    "lai_d": 0.0,
+                    "lai_1": 21,
+                    "lai_2": 21,
+                    "sai_method": "wheat"
+                },
+                "gsto": {
+                    "fmin": 0.01,
+                    "gmax": 450.0,
+                    "gmorph": 1.0,
+                    "method": "photosynthesis",
+                    "f_phen_method": "simple day PLF",
+                    "f_phen_lima": null,
+                    "f_phen_limb": null,
+                    "f_phen_a": 0.1,
+                    "f_phen_b": null,
+                    "f_phen_c": 1.0,
+                    "f_phen_d": null,
+                    "f_phen_e": 0.1,
+                    "f_phen_1": 0,
+                    "f_phen_2": null,
+                    "f_phen_3": null,
+                    "f_phen_4": 45,
+                    "leaf_f_phen_method": "day PLF",
+                    "leaf_f_phen_a": 0.8,
+                    "leaf_f_phen_b": 1.0,
+                    "leaf_f_phen_c": 0.2,
+                    "leaf_f_phen_1": 15,
+                    "leaf_f_phen_2": 40,
+                    "f_light_method": "enabled",
+                    "f_lightfac": 0.0105,
+                    "cosa": 0.5,
+                    "f_temp_method": "default",
+                    "t_min": 12,
+                    "t_opt": 26,
+                    "t_max": 40,
+                    "f_vpd_method": "linear",
+                    "vpd_min": 3.2,
+                    "vpd_max": 1.2,
+                    "f_sw_method": "disabled",
+                    "swp_min": null,
+                    "swp_max": null,
+                    "fswp_exp_curve": "temperate",
+                    "fswp_exp_a": null,
+                    "fswp_exp_b": null,
+                    "f_o3_method": "wheat",
+                    "vpd_crit": 1000.0
+                },
+                "pn_gsto": {
+                    "g_sto_0": 20000,
+                    "m": 8.12,
+                    "v_cmax_25": 180,
+                    "j_max_25": 400,
+                    "tleaf_method": "EB",
+                    "o3_method": "martin2000",
+                    "k_z": 24,
+                    "f_0": 37
+                },
+                "height": 1.0,
+                "lm": 0.02,
+                "y": 6.0
+            }
+        ], 
+        "height_method": "constant", 
+        "lai_method": "estimate total", 
+        "sai_method": "estimate total", 
+        "flai": [
+            [
+                1.0
+            ]
+        ]
+    }, 
+    "location": {
+        "lat": 40.43,
+        "lon": -3.7,
+        "elev": 20,
+        "albedo": 0.2,
+        "rsoil": 200,
+        "otc": false,
+        "z_u": 1.0,
+        "z_o3": 50.0,
+        "h_u": null,
+        "h_o3": null
+    },
+    "met_config": {
+        "co2_method": "constant",
+        "co2_constant": 391.0
+    },
+    "SMD_config": {
+        "soil_texture": "loam",
+        "soil": {
+            "b": null,
+            "fc": null,
+            "swp_ae": null,
+            "ksat": null
+        },
+        "root": 0.75,
+        "pwp": -4.0,
+        "asw_fc": null,
+        "source": "P-M",
+        "initial_swc": null
+    }
+}
