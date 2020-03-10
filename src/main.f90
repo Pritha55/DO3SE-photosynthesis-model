@@ -105,7 +105,7 @@ program DO3SE_main
     eact = 1        !< Ambient vapour pressure (kPa)
     O3 = 50
     td = 1
-    dd = 2
+    dd = 100
     hr = 2
   
       
