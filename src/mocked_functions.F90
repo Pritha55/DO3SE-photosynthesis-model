@@ -18,4 +18,9 @@ module mocked_functions
       j = 1
     
     end function sunlit_LAI
+
+    ! pure subroutine gsto_pn(g_sto)
+    !   real, intent(out) :: g_sto      !< Output: Stomatal conductance (mmol m-2 PLA s-1)
+    !   g_sto = 1
+    ! end subroutine gsto_pn
 end module mocked_functions
