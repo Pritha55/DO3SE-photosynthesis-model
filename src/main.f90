@@ -7,6 +7,7 @@ program DO3SE_main
     implicit none
 
     character(len=256) :: arg1
+    character(len=256) :: ddin
 
     !== Photosynthesis vars ==!
     type(pngstoconfig_t) :: pgc   !< Photosynthesis gsto parameters
@@ -33,6 +34,7 @@ program DO3SE_main
     integer :: dd
     integer :: hr
 
+    ! Outputs
     real, dimension(366) :: fO3_h_1_hist
     real, dimension(366) :: fO3_d_hist
     real, dimension(366) :: daily_thermal_temperatures
@@ -53,7 +55,7 @@ program DO3SE_main
     !== END Photosynthesis vars ==!
   
 
-
+    ! Some code to check we are running ok
     print *, "hello world"
     call get_command_argument(1, arg1)
     print * , arg1
@@ -105,8 +107,13 @@ program DO3SE_main
     eact = 1        !< Ambient vapour pressure (kPa)
     O3 = 50
     td = 1
-    dd = 100
-    hr = 2
+    ! dd = 100
+
+    ! Assign command line arg1 to the day
+    call get_command_argument(1, ddin)
+    ! dd = ichar(ddin)
+    read (ddin,'(I10)') dd
+    hr = 10
   
       
     call gsto_pn(pgc, season, V_cmax_25, J_max_25, D_0, &
