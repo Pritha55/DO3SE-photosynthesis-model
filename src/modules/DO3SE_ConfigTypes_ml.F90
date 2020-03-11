@@ -6,7 +6,6 @@ module DO3SE_ConfigTypes_ml
 
     use DO3SE_ModelConstants_ml, only: UNDEF, IUNDEF, MAX_LAYERS, MAX_LC
     use DO3SE_Util_ml
-    use DO3SE_Util_b_ml
 !   #include "interop_types.h"
 !   #include "DO3SE_Util_ml.h"
   
