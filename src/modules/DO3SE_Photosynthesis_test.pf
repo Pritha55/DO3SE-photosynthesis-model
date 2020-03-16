@@ -1,0 +1,14 @@
+@test
+subroutine DO3SE_Photosynthesis_ml_test()
+!   use DO3SE_Photosynthesis_ml
+  use funit
+
+  integer :: arg1 = 1
+  integer :: arg2
+
+  arg2 = arg1 + 1
+
+  ! @assertEqual(3, arg2, 'module_demo')
+  @assertEqual(2, arg2, 'demo test')
+   
+end subroutine DO3SE_Photosynthesis_ml_test
