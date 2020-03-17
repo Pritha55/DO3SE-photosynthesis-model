@@ -34,4 +34,3 @@ clean:
 	$(MAKE) -C config clean
 	$(MAKE) -C resistance clean
 	$(MAKE) -C photosynthesis clean
-	$(MAKE) -C tests clean
