@@ -1,7 +1,8 @@
 #!/bin/bash
 
-cd src/modules && \
+cd src && \
 make clean && \
-make all ./run_tests && \
-./run_tests || true &&\
-make clean 
+make all TEST_MODE=1 && \
+echo "----------------------- RUNNING TESTS -----------------------------"
+./modules/photosynthesis/run_tests || true &&\
+make clean

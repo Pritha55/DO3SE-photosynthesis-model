@@ -7,5 +7,5 @@ subroutine DO3SE_Photosynthesis_test()
   use DO3SE_ConfigTypes_ml
 
   @assertEqual(84.9395599, 7.0, 'demo test')
-   
+
 end subroutine DO3SE_Photosynthesis_test

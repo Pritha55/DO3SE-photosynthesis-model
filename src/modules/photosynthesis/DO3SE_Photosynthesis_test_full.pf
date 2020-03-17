@@ -68,18 +68,18 @@ subroutine DO3SE_Photosynthesis_test_full()
   pgc%m = 8.12
   pgc%v_cmax_25 = 180.0
   pgc%j_max_25 = 400.0
-  
+
   season%growing_season_method = "constant"
   season%SGS = 118
   season%EGS = 210
-  
+
   season%accumulation_period_method = "constant"
   season%Astart = 153
   season%Aend = 208
-  
+
   ! season%height_method = "constant"
   ! season%height = 1.0
-  
+
   ! season%LAI_method = "day PLF"
   season%LAI_a = 0.0
   season%LAI_b = 3.5
@@ -87,7 +87,7 @@ subroutine DO3SE_Photosynthesis_test_full()
   season%LAI_d = 0.0
   season%LAI_1 = 21
   season%LAI_2 = 21
-  
+
   season%SAI_method = "wheat"
 
   V_cmax_25 = 180.0   !< Maximum catalytic rate at 25 degrees (umol m-2 s-1)
@@ -117,7 +117,7 @@ subroutine DO3SE_Photosynthesis_test_full()
   read (ddin,'(I10)') dd
   hr = 10
 
-    
+
   call gsto_pn(pgc, season, V_cmax_25, J_max_25, D_0, &
   LAI, PARsun, PARshade, sinB, &
   Lm, Tair_C, u, CO2, &
@@ -128,6 +128,7 @@ subroutine DO3SE_Photosynthesis_test_full()
 
   ! call gsto_pn(g_sto)
   print *, g_sto
-  @assertEqual(84.9395599, g_sto, 'demo test')
-   
+  @assertEqual(84.9395599, 1.0, 'demo test')
+  ! @assertEqual(84.9395599, g_sto, 'demo test')
+
 end subroutine DO3SE_Photosynthesis_test_full
