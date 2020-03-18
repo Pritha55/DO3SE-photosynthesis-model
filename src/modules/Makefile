@@ -21,8 +21,7 @@ build:
 
 testing: build
 	@echo -------------BUILDING TESTS--------------------------------------------
-	# $(MAKE) -C tests all
-	$(MAKE) -C photosynthesis run_tests
+	$(MAKE) -C photosynthesis tests
 
 %.o : %.F90
 	$(FC) -c $(FFLAGS) $<
