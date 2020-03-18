@@ -1,0 +1,93 @@
+@test
+subroutine DO3SE_Photosynthesis_far_test()
+  use funit
+
+  ! use DO3SE_Photosynthesis_ml
+  use DO3SE_Photosynthesis_far_ml
+  use DO3SE_ConfigTypes_ml
+
+  implicit none
+
+  ! INPUTS
+  type(pngstoconfig_t) :: pgc   !< Photosynthesis gsto parameters
+  type(season_t) :: season
+  real :: Tleaf_C = 1.0       !< Leaf temperature (degrees C)
+  real :: c_a = 1.0           !< CO2 concentration (ppm)
+  real :: e_a = 1.0           !< Ambient vapour pressure (Pa)
+  real :: Q = 1.0             !< PPFD (umol/m^2/s)
+  real :: g_bl = 1.0          !< Boundary layer conductance to H2O vapour (micromol m-2 PLA s-1)
+  real :: g_sto_0 = 1.0       !< Closed stomata conductance (umol/m^2/s)
+  real :: m = 1.0             !< Species-specific sensitivity to An (dimensionless)
+  real :: V_cmax_25 = 1.0     !< Maximum catalytic rate at 25 degrees (umol/m^2/s)
+  real :: J_max_25 = 1.0      !< Maximum rate of electron transport at 25 degrees (umol/m^2/s)
+  real :: D_0 = 1.0           !< "The VPD at which g_sto is reduced by a factor of 2" (Pa) (Leuning et al. 1998)
+  real :: O3 = 1.0
+  real :: td = 1.0
+  integer :: dd = 20
+  integer :: hr = 1
+
+  ! IN AND OUT
+  real, dimension(366) :: fO3_h_1_hist
+  real, dimension(366) :: fO3_d_hist
+  real, dimension(366) :: daily_thermal_temperatures
+  real :: O3up_acc_out
+
+  ! OUTPUTS
+
+  real :: gsto_final   !< Output: Raw photosynthesis-based stomatal conductance (umol m-2 s-1)
+  real :: pngsto_An    !< Output: net CO2 assimilation (umol m-2 s-1)
+  real :: pngsto_Ac
+  real :: pngsto_Aj
+  real :: pngsto_Ap
+  real :: pngsto_R_d
+  real :: O3up_out
+  real :: fO3_h_out
+  real :: fO3_d_out
+
+  ! Set vars
+  pgc%g_sto_0 = 20000.0
+  pgc%m = 8.12
+  pgc%v_cmax_25 = 180.0
+  pgc%j_max_25 = 400.0
+
+  season%growing_season_method = "constant"
+  season%SGS = 118
+  season%EGS = 210
+
+  season%accumulation_period_method = "constant"
+  season%Astart = 153
+  season%Aend = 208
+
+  ! season%height_method = "constant"
+  ! season%height = 1.0
+
+  ! season%LAI_method = "day PLF"
+  season%LAI_a = 0.0
+  season%LAI_b = 3.5
+  season%LAI_c = 3.5
+  season%LAI_d = 0.0
+  season%LAI_1 = 21
+  season%LAI_2 = 21
+
+  season%SAI_method = "wheat"
+
+
+  call farquhar_photosynthesis_2(pgc, season, Tleaf_C, c_a, e_a, Q, g_bl, &
+                                g_sto_0, m, V_cmax_25, J_max_25, D_0, O3, td, dd, hr, &
+                                fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
+                                gsto_final, pngsto_An, pngsto_Ac, &
+                                pngsto_Aj, pngsto_Ap, O3up_out, O3up_acc_out, &
+                                fO3_h_out, fO3_d_out, pngsto_R_d)
+
+  @assertEqual(1.36218476, gsto_final, 'gsto_final')
+  @assertEqual(-0.0709027424, pngsto_An, 'pngsto_An')
+  @assertEqual(0, pngsto_Ac, 'pngsto_Ac')
+  @assertEqual(0.0433355756, pngsto_Aj, 'pngsto_Aj')
+  @assertEqual(0.0434980951, pngsto_Ap, 'pngsto_Ap')
+  @assertEqual(0.0709027424, pngsto_R_d, 'pngsto_R_d')
+  @assertEqual(1.26683187, O3up_out, 'O3up_out')
+  @assertEqual(1.0, fO3_h_out, 'fO3_h_out')
+  @assertEqual(0.0, fO3_d_out, 'fO3_d_out')
+
+
+end subroutine DO3SE_Photosynthesis_far_test
