@@ -148,15 +148,21 @@ module DO3SE_Photosynthesis_ml
       case ("Ewert")
           Tleaf_C = Tair_C
 
+          ! Calculate for Sun
           call farquhar_photosynthesis_2(pgc, season, Tleaf_C, CO2, eact*1e3, PARsun*4.57, g_bv, &
                                        pgc%g_sto_0, pgc%m, V_cmax_25, J_max_25, D_0*1e3, O3, td, dd, hr, &
                                        fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
                                        g_sv, A_n_sun, A_c, A_j, A_p, O3up, O3up_acc, fO3_h, fO3_d, R_d)
 
+          ! Calculate for Shade
+
           call farquhar_photosynthesis_2(pgc, season, Tleaf_C, CO2, eact*1e3, PARshade*4.57, g_bv, &
                                        pgc%g_sto_0, pgc%m, V_cmax_25, J_max_25, D_0*1e3, O3, td, dd, hr, &
                                        fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
                                        g_sv, A_n_shade, A_c, A_j, A_p, O3up, O3up_acc, fO3_h, fO3_d, R_d)
+
+          ! Calculate for Shade with standard A_n
+
           call farquhar_photosynthesis_2(pgc, season, Tleaf_C, CO2, eact*1e3, PARshade*4.57, g_bv, &
                                        pgc%g_sto_0, pgc%m, V_cmax_25, J_max_25, D_0*1e3, O3, td, dd, hr, &
                                        fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
@@ -165,32 +171,6 @@ module DO3SE_Photosynthesis_ml
           LAIshade = LAI - LAIsun
           Canopy_A_n = LAIsun * A_n_sun + LAIshade * A_n_shade
       end select
-
-
-      ! =================================== Skipping Select and just running EWERT ================================== !
-      ! =================================== ----------------------------------------- ================================== !
-      ! =================================== ----------------------------------------- ================================== !
-
-      ! Tleaf_C = Tair_C
-
-      ! call farquhar_photosynthesis_2(pgc, season, Tleaf_C, CO2, eact*1e3, PARsun*4.57, g_bv, &
-      !                             pgc%g_sto_0, pgc%m, V_cmax_25, J_max_25, D_0*1e3, O3, td, dd, hr, &
-      !                             fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
-      !                             g_sv, A_n_sun, A_c, A_j, A_p, O3up, O3up_acc, fO3_h, fO3_d, R_d)
-
-      ! call farquhar_photosynthesis_2(pgc, season, Tleaf_C, CO2, eact*1e3, PARshade*4.57, g_bv, &
-      !                             pgc%g_sto_0, pgc%m, V_cmax_25, J_max_25, D_0*1e3, O3, td, dd, hr, &
-      !                             fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
-      !                             g_sv, A_n_shade, A_c, A_j, A_p, O3up, O3up_acc, fO3_h, fO3_d, R_d)
-      ! call farquhar_photosynthesis_2(pgc, season, Tleaf_C, CO2, eact*1e3, PARshade*4.57, g_bv, &
-      !                             pgc%g_sto_0, pgc%m, V_cmax_25, J_max_25, D_0*1e3, O3, td, dd, hr, &
-      !                             fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
-      !                             g_sv, A_n, A_c, A_j, A_p, O3up, O3up_acc, fO3_h, fO3_d, R_d)
-      ! LAIsun = sunlit_LAI(LAI, sinB)
-      ! LAIshade = LAI - LAIsun
-      ! Canopy_A_n = LAIsun * A_n_sun + LAIshade * A_n_shade
-
-      ! =================================== ----------------------------------------- ================================== !
 
       ! Convert g_sto from umol to mmol, and from H2O to O3
       g_sto = DRATIO * (max(0.0, g_sv) / 1000)

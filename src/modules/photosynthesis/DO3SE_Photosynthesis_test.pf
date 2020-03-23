@@ -7,9 +7,6 @@ subroutine DO3SE_Photosynthesis_test()
 
   implicit none
 
-  character(len=256) :: arg1
-  character(len=256) :: ddin
-
   !== Photosynthesis vars ==!
   type(pngstoconfig_t) :: pgc   !< Photosynthesis gsto parameters
   type(season_t) :: season
@@ -55,11 +52,16 @@ subroutine DO3SE_Photosynthesis_test()
   real :: g_bv       !< Output: Boundary conductance to water vapour
   !== END Photosynthesis vars ==!
 
+  ! integer :: i
 
-  ! Some code to check we are running ok
-  print *, "hello world"
-  call get_command_argument(1, arg1)
-  print * , arg1
+  ! ! Set vars
+  ! do i = 1, 366
+  !   daily_thermal_temperatures(i) = 25.0
+  !   fO3_h_1_hist(i) = 4.0
+  !   fO3_d_hist(i) = 3.0
+  ! end do
+
+
   ! ============== TEST gsto_pn ============== !
 
   !== specify value from spanish wheat photo config ==!
