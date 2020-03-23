@@ -10,6 +10,7 @@ module DO3SE_Photosynthesis_helpers_ml
     public :: temp_dep_inhibit
 
 contains
+  ! Equation 10 from Ewert paper
   pure function calc_fO3_h(O3up) result(fO3_h)
     real, intent(in) :: O3up
     real :: fO3_h
@@ -25,6 +26,7 @@ contains
     end if
   end function calc_fO3_h
 
+  ! Equation 14 & 15 from Ewert paper
   pure function calc_f_LA(t_lem, t_lma, t_l, td) result(f_LA)
     real, intent(in) :: t_lem
     real, intent(in) :: t_lma
@@ -41,6 +43,7 @@ contains
     end if
   end function
 
+  ! Equation 18 from Ewert paper
   pure function calc_f_LS(t_lem, t_lep, t_lma, t_l, fO3_l, td) result(f_LS)
     real, intent(in) :: t_lem
     real, intent(in) :: t_lep

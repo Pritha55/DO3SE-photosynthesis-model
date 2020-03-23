@@ -119,13 +119,13 @@ contains
 
   do k=1,50
 
-      O3up = O3 * g_sto * fDO3
+      O3up = O3 * g_sto * fDO3 ! << Equation 9 from Ewert paper
 
-      fO3_h = calc_fO3_h(O3up)
+      fO3_h = calc_fO3_h(O3up) ! << Equation 17 from Ewert paper
 
       f_LA = calc_f_LA(t_lem, t_lma, t_l, td_dd)
 
-      if (dd == 1) then
+      if (dd == 1) then ! << Equation 12 from Ewert paper
       rO3_s = f_LA
       else
       rO3_s = fO3_d_hist(dd-1) + (1 - fO3_d_hist(dd-1)) * f_LA
@@ -139,19 +139,22 @@ contains
 
       O3up_acc = O3up_acc_out + O3up
 
-      fO3_l = 1 - (Gamma_3 * O3up_acc_out) ! USING YESTERDAY'S VALUE, COULD CHANGE TO ABOVE.
+      fO3_l = 1 - (Gamma_3 * O3up_acc_out) ! << Equation 17 from Ewert paper - USING YESTERDAY'S VALUE, COULD CHANGE TO ABOVE.
 
-      t_lma = (t_lep + t_lse) * fO3_l
+      t_lma = (t_lep + t_lse) * fO3_l !  << Equation 16 from Ewert paper
 
       t_lse = 0.33 * t_lma
 
       f_LS = calc_f_LS(t_lem, t_lep, t_lma, t_l, fO3_l, td_dd)
 
       ! Rubisco activity limited assimilation rate
+      ! Equation 8 from Ewert paper
+      ! TODO: Test this equation
       A_c = V_cmax * ((c_i - Gamma_star) &
       / (c_i + (K_C * (1 + (O_i / K_O))))) * fO3_d * f_LS
 
       ! RuBP regeneration (electron transport) limited assimilation rate
+      ! Equation 3 from Ewert paper
       A_j = J * ((c_i - Gamma_star) &
       / ((A_j_a * c_i) + (A_j_b * Gamma_star)))
 
@@ -171,6 +174,7 @@ contains
 
       ! Stomatal conductance
       ! TODO: use humidity deficit version instead
+      ! Equation 5 from Ewert paper
       g_sto = g_sto_0 + m * (A_n / ((1 + (h_s_VPD/D_0)) * (c_s - Gamma)))*1e6
 
       ! CO2 supply
