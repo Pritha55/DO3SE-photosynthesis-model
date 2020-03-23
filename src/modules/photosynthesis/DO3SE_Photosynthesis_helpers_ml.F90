@@ -60,7 +60,7 @@ contains
   end function
 
 
-    !> Calculate parameter from temperature dependence curve
+  !> Calculate parameter from temperature dependence curve
   pure function temp_dep(P_ref, T_ref, H_a, T, R) result (P)
     real, intent(in) :: P_ref   ! Parameter value at T_ref
     real, intent(in) :: T_ref   ! Reference temperature (degrees K)
