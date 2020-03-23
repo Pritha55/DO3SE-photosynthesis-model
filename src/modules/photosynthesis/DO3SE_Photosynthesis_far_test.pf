@@ -11,7 +11,6 @@
 
     real, dimension(366) :: fO3_h_1_hist
     real, dimension(366) :: fO3_d_hist
-    real, dimension(366) :: daily_thermal_temperatures
 
     real :: g_sto                           !two sided stomatal conduct.,vapour [micro mol/(m^2s)]
     real :: A_n                             !netto assimilation rate            [micro mol/(m^2*s)]
@@ -27,6 +26,14 @@
     real :: t_lma = 1.0
     real :: t_lse = 1.0
     real :: Gamma_star = 1.0
+
+    integer :: i
+    ! Set vars
+    do i = 1, 366
+      fO3_h_1_hist(i) = 0.1
+      fO3_d_hist(i) = 0.1
+    end do
+
 
 
     ! ================ get_co2_concentration_in_stomata TEST ==================
@@ -68,7 +75,7 @@
 
     ! Check variable outputs
     ! TODO: Above variables need sanity checking to see what normal outputs should be
-    @assertEqual(-729925.938, g_sto, 'far-get_co2-g_sto')
+    @assertEqual(-729925.938, g_sto, 'get_co2-g_sto')
     @assertEqual(-0.750000715, A_n, 'get_co2-A_n')
     @assertEqual(0.999793708, A_c, 'get_co2-A_c')
     @assertEqual(0.249999270, A_j, 'get_co2-A_j')
@@ -125,7 +132,15 @@
     real :: fO3_h_out
     real :: fO3_d_out
 
+    integer :: i
+
     ! Set vars
+    do i = 1, 366
+      daily_thermal_temperatures(i) = 25.0
+      fO3_h_1_hist(i) = 0.1
+      fO3_d_hist(i) = 0.1
+    end do
+
     pgc%g_sto_0 = 20000.0
     pgc%m = 8.12
     pgc%v_cmax_25 = 180.0
@@ -166,6 +181,7 @@
                                   pngsto_Aj, pngsto_Ap, O3up_out, O3up_acc_out, &
                                   fO3_h_out, fO3_d_out, pngsto_R_d)
 
+    ! @assertEqual(25.0, daily_thermal_temperatures(dd), 'far_2-temp')
     @assertEqual(1.60806298, gsto_final, 'far_2-gsto_final')
     @assertEqual(-0.0709027424, pngsto_An, 'far_2-pngsto_An')
     @assertEqual(0, pngsto_Ac, 'far_2-pngsto_Ac')
@@ -174,7 +190,7 @@
     @assertEqual(0.0709027424, pngsto_R_d, 'far_2-pngsto_R_d')
     @assertEqual(1.49549854, O3up_out, 'far_2-O3up_out')
     @assertEqual(1.0, fO3_h_out, 'far_2-fO3_h_out')
-    @assertEqual(0.0, fO3_d_out, 'far_2-fO3_d_out')
+    @assertEqual(0.100000007E-01, fO3_d_out, message='far_2-fO3_d_out', tolerance=0.1E-10)
 
 
 
