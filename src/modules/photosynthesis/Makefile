@@ -43,7 +43,7 @@ include $(LATEST_PFUNIT_DIR)/include/PFUNIT.mk
 OTHER_LIBRARIES = -L../photosynthesis -L../constants -L../config -L../util -L../resistance -lsut
 
 # **run_tests**
-photosynthesis_tests_TESTS := DO3SE_Photosynthesis_test.pf DO3SE_Photosynthesis_far_test.pf
+photosynthesis_tests_TESTS := DO3SE_Photosynthesis_test.pf DO3SE_Photosynthesis_far_test.pf DO3SE_Photosynthesis_helpers_test.pf
 photosynthesis_tests_OTHER_LIBRARIES := $(OTHER_LIBRARIES)
 
 $(eval $(call make_pfunit_test,photosynthesis_tests))

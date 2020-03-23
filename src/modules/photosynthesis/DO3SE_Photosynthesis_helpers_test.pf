@@ -1,0 +1,47 @@
+@test
+subroutine temp_dep_test()
+
+    use funit
+
+    ! use DO3SE_Photosynthesis_ml
+    use DO3SE_Photosynthesis_far_ml
+    use DO3SE_PhysicalConstants_ml, only: T0, R, Rn_MJ_to_W, DRATIO
+    use DO3SE_Photosynthesis_helpers_ml
+    use DO3SE_ConfigTypes_ml
+
+    real :: P, K_C, K_O, R_d
+
+    P = temp_dep(42.75, T0 + 25, 37830.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+    K_C = temp_dep(404.9, T0 + 25, 79430.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+    K_O = temp_dep(404.9, T0 + 25, 36380.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+    R_d = temp_dep(404.9, T0 + 25, 53000.0 , T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+
+    @assertEqual(18.8789978, P, 'temp_dep_test-P')
+    @assertEqual(72.7879791, K_C, 'temp_dep_test-K_C')
+    @assertEqual(184.499786, K_O, 'temp_dep_test-K_O')
+    @assertEqual(128.840134, R_d, 'temp_dep_test-R_d')
+
+end subroutine temp_dep_test
+
+@test
+subroutine temp_dep_inhibit_test()
+
+    use funit
+
+    ! use DO3SE_Photosynthesis_ml
+    use DO3SE_Photosynthesis_far_ml
+    use DO3SE_PhysicalConstants_ml, only: T0, R, Rn_MJ_to_W, DRATIO
+    use DO3SE_Photosynthesis_helpers_ml
+    use DO3SE_ConfigTypes_ml
+
+    real :: P, K_C, K_O, R_d
+
+    P = temp_dep_inhibit(42.75, T0 + 25, 73637.0, 149252.0, 486.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+    V_cmax = temp_dep_inhibit(38.0, T0 + 25, 73637.0, 149252.0, 486.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+    ! J_max = temp_dep_inhibit(75, T0 + 25, 50300, 152044, 495, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+
+    @assertEqual(8.74348640, P, 'temp_dep_inhibit_test-P')
+    @assertEqual(7.77198792, V_cmax, 'temp_dep_inhibit_test-V_cmax')
+    ! @assertEqual(7.77198792, J_max, 'temp_dep_inhibit_test-J_max')
+
+end subroutine temp_dep_inhibit_test
