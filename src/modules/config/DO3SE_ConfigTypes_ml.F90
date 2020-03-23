@@ -14,38 +14,38 @@ module DO3SE_ConfigTypes_ml
 
     integer :: i
 
-    ! !> Location properties.
-    ! TYPE, public :: Location_t
-    !   REAL :: lat = UNDEF     !< Latitude (degrees North)
-    !   REAL :: lon = UNDEF     !< Longitude (degrees East)
-    !   REAL :: elev = UNDEF    !< Elevation (m above sea level)
-    !   REAL :: albedo = UNDEF  !< Surface albedo (fraction)
-    !   REAL :: Rsoil = 100     !< Soil resistance (s m-1)
+    !> Location properties.
+    TYPE, public :: Location_t
+      REAL :: lat = UNDEF     !< Latitude (degrees North)
+      REAL :: lon = UNDEF     !< Longitude (degrees East)
+      REAL :: elev = UNDEF    !< Elevation (m above sea level)
+      REAL :: albedo = UNDEF  !< Surface albedo (fraction)
+      REAL :: Rsoil = 100     !< Soil resistance (s m-1)
 
-    !   LOGICAL :: OTC = .false.  !< Is open top chamber experiment?
-    !   REAL :: z_u = UNDEF       !< Measurement height for windspeed (m)
-    !   REAL :: z_O3 = UNDEF      !< Measurement height for O3 (m)
-    !   REAL :: h_u = UNDEF       !< Canopy height for windspeed measurement, default = target canopy (m)
-    !   REAL :: h_O3 = UNDEF      !< Canopy height for O3 measurement, default = target canopy (m)
-    ! end type Location_t
-    ! public :: check_Location
+      LOGICAL :: OTC = .false.  !< Is open top chamber experiment?
+      REAL :: z_u = UNDEF       !< Measurement height for windspeed (m)
+      REAL :: z_O3 = UNDEF      !< Measurement height for O3 (m)
+      REAL :: h_u = UNDEF       !< Canopy height for windspeed measurement, default = target canopy (m)
+      REAL :: h_O3 = UNDEF      !< Canopy height for O3 measurement, default = target canopy (m)
+    end type Location_t
+    public :: check_Location
 
-    ! !> Configuration for meteorological data.
-    ! TYPE, public :: MetConfig_t
-    !   !> Method for supplying CO2 concentration:
-    !   !!    - "constant": Use CO2_constant value
-    !   !!    - "input":    CO2 concentration supplied
-    !   CHARACTER(len=16) :: CO2_method = "constant"
-    !   !> Constant CO2 concentration (ppm)
-    !   REAL :: CO2_constant = 391.0
-    !   !> Method for supplying O3 concentration:
-    !   !!    - "constant": Use O3_constant value
-    !   !!    - "offset":   Add O3_constant value to supplied O3 concentration
-    !   !!    - "input":    O3 concentration supplied
-    !   CHARACTER(len=16) :: O3_method = "input"
-    !   !> Constant or offset amount for O3 concenttration (ppb)
-    !   REAL :: O3_constant = UNDEF
-    ! end type MetConfig_t
+    !> Configuration for meteorological data.
+    TYPE, public :: MetConfig_t
+      !> Method for supplying CO2 concentration:
+      !!    - "constant": Use CO2_constant value
+      !!    - "input":    CO2 concentration supplied
+      CHARACTER(len=16) :: CO2_method = "constant"
+      !> Constant CO2 concentration (ppm)
+      REAL :: CO2_constant = 391.0
+      !> Method for supplying O3 concentration:
+      !!    - "constant": Use O3_constant value
+      !!    - "offset":   Add O3_constant value to supplied O3 concentration
+      !!    - "input":    O3 concentration supplied
+      CHARACTER(len=16) :: O3_method = "input"
+      !> Constant or offset amount for O3 concenttration (ppb)
+      REAL :: O3_constant = UNDEF
+    end type MetConfig_t
 
     ! !> Land cover season definition.
     TYPE, public :: Season_t
@@ -300,20 +300,20 @@ module DO3SE_ConfigTypes_ml
 
   contains
 
-  ! subroutine check_Location(location)
-  !     type(Location_t), intent(inout) :: location
+  subroutine check_Location(location)
+      type(Location_t), intent(inout) :: location
 
-  !     ASSERT_DEFINED(location%lat)
-  !     ASSERT_DEFINED(location%lon)
-  !     ASSERT_DEFINED(location%elev)
-  !     ASSERT_DEFINED(location%albedo)
-  !     ASSERT_DEFINED(location%Rsoil)
+      ! ASSERT_DEFINED(location%lat)
+      ! ASSERT_DEFINED(location%lon)
+      ! ASSERT_DEFINED(location%elev)
+      ! ASSERT_DEFINED(location%albedo)
+      ! ASSERT_DEFINED(location%Rsoil)
 
-  !     if (.not. location%OTC) then
-  !       ASSERT_DEFINED(location%z_u)
-  !       ASSERT_DEFINED(location%z_O3)
-  !     end if
-  !   end subroutine check_Location
+      if (.not. location%OTC) then
+        ! ASSERT_DEFINED(location%z_u)
+        ! ASSERT_DEFINED(location%z_O3)
+      end if
+    end subroutine check_Location
 
   !   subroutine check_Season(season, loc)
   !     type(Season_t), intent(inout) :: season
