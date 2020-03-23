@@ -1,93 +1,165 @@
-@test
-subroutine DO3SE_Photosynthesis_far_test()
-  use funit
+  ! @test
+  ! subroutine get_co2_concentration_in_stomata_test()
 
-  ! use DO3SE_Photosynthesis_ml
-  use DO3SE_Photosynthesis_far_ml
-  use DO3SE_ConfigTypes_ml
+  !   use funit
 
-  implicit none
+  !   ! use DO3SE_Photosynthesis_ml
+  !   use DO3SE_Photosynthesis_far_ml
+  !   use DO3SE_ConfigTypes_ml
 
-  ! INPUTS
-  type(pngstoconfig_t) :: pgc   !< Photosynthesis gsto parameters
-  type(season_t) :: season
-  real :: Tleaf_C = 1.0       !< Leaf temperature (degrees C)
-  real :: c_a = 1.0           !< CO2 concentration (ppm)
-  real :: e_a = 1.0           !< Ambient vapour pressure (Pa)
-  real :: Q = 1.0             !< PPFD (umol/m^2/s)
-  real :: g_bl = 1.0          !< Boundary layer conductance to H2O vapour (micromol m-2 PLA s-1)
-  real :: g_sto_0 = 1.0       !< Closed stomata conductance (umol/m^2/s)
-  real :: m = 1.0             !< Species-specific sensitivity to An (dimensionless)
-  real :: V_cmax_25 = 1.0     !< Maximum catalytic rate at 25 degrees (umol/m^2/s)
-  real :: J_max_25 = 1.0      !< Maximum rate of electron transport at 25 degrees (umol/m^2/s)
-  real :: D_0 = 1.0           !< "The VPD at which g_sto is reduced by a factor of 2" (Pa) (Leuning et al. 1998)
-  real :: O3 = 1.0
-  real :: td = 1.0
-  integer :: dd = 20
-  integer :: hr = 1
+  !   implicit none
 
-  ! IN AND OUT
-  real, dimension(366) :: fO3_h_1_hist
-  real, dimension(366) :: fO3_d_hist
-  real, dimension(366) :: daily_thermal_temperatures
-  real :: O3up_acc_out
+  !   real, dimension(366) :: fO3_h_1_hist
+  !   real, dimension(366) :: fO3_d_hist
+  !   real, dimension(366) :: daily_thermal_temperatures
 
-  ! OUTPUTS
+  !   real :: g_sto                           !two sided stomatal conduct.,vapour [micro mol/(m^2s)]
+  !   real :: A_n                             !netto assimilation rate            [micro mol/(m^2*s)]
+  !   real :: A_c                             !Rub. activity. lim. ass. rate      [micro mol/(m^2*s)]
+  !   real :: A_j                             !electr. transp. lim. ass. rate     [micro mol/(m^2*s)]
+  !   real :: A_p
+  !   real :: R_d                             !day respiration rate               [micro mol/(m^2*s)]
+  !   real :: O3up
+  !   real :: fO3_d
+  !   real :: fO3_h
 
-  real :: gsto_final   !< Output: Raw photosynthesis-based stomatal conductance (umol m-2 s-1)
-  real :: pngsto_An    !< Output: net CO2 assimilation (umol m-2 s-1)
-  real :: pngsto_Ac
-  real :: pngsto_Aj
-  real :: pngsto_Ap
-  real :: pngsto_R_d
-  real :: O3up_out
-  real :: fO3_h_out
-  real :: fO3_d_out
+  !   ! ================ get_co2_concentration_in_stomata TEST ==================
+  !   call get_co2_concentration_in_stomata(&
+  !   c_i_start=0.0, &
+  !   c_a=1.0, &
+  !   e_a=1.0, &
+  !   g_bl=1.0, &
+  !   g_sto_0=1.0, &
+  !   m=1.0, &
+  !   D_0=1.0, &
+  !   O3=1.0, &
+  !   dd=1, &
+  !   O3up_acc_out=1.0, &
+  !   fO3_h_1_hist=fO3_h_1_hist, &
+  !   fO3_d_hist=fO3_d_hist, &
+  !   g_sto=g_sto, &
+  !   A_n=A_n, &
+  !   A_c=A_c, &
+  !   A_j=A_j, &
+  !   A_p=A_p, &
+  !   R_d=R_d, &
+  !   O3up=O3up, &
+  !   fO3_d=fO3_d, &
+  !   fO3_h=fO3_h)
 
-  ! Set vars
-  pgc%g_sto_0 = 20000.0
-  pgc%m = 8.12
-  pgc%v_cmax_25 = 180.0
-  pgc%j_max_25 = 400.0
+  !   ! Check variable outputs
+  !   @assertEqual(1.60806298, g_sto, 'get_co2-g_sto')
+  !   @assertEqual(1.60806298, A_n, 'get_co2-A_n')
+  !   @assertEqual(1.60806298, A_c, 'get_co2-A_c')
+  !   @assertEqual(1.60806298, A_j, 'get_co2-A_j')
+  !   @assertEqual(1.60806298, A_p, 'get_co2-A_p')
+  !   @assertEqual(1.60806298, R_d, 'get_co2-R_d')
+  !   @assertEqual(1.60806298, O3up, 'get_co2-O3up')
+  !   @assertEqual(1.60806298, fO3_d, 'get_co2-fO3_d')
+  !   @assertEqual(1.60806298, fO3_h, 'get_co2-fO3_h')
+  ! end subroutine get_co2_concentration_in_stomata_test
 
-  season%growing_season_method = "constant"
-  season%SGS = 118
-  season%EGS = 210
+  @test
+  subroutine far_test()
 
-  season%accumulation_period_method = "constant"
-  season%Astart = 153
-  season%Aend = 208
+    use funit
 
-  ! season%height_method = "constant"
-  ! season%height = 1.0
+    ! use DO3SE_Photosynthesis_ml
+    use DO3SE_Photosynthesis_far_ml
+    use DO3SE_ConfigTypes_ml
 
-  ! season%LAI_method = "day PLF"
-  season%LAI_a = 0.0
-  season%LAI_b = 3.5
-  season%LAI_c = 3.5
-  season%LAI_d = 0.0
-  season%LAI_1 = 21
-  season%LAI_2 = 21
+    implicit none
 
-  season%SAI_method = "wheat"
+    ! INPUTS
+    type(pngstoconfig_t) :: pgc   !< Photosynthesis gsto parameters
+    type(season_t) :: season
+    real :: Tleaf_C = 1.0       !< Leaf temperature (degrees C)
+    real :: c_a = 1.0           !< CO2 concentration (ppm)
+    real :: e_a = 1.0           !< Ambient vapour pressure (Pa)
+    real :: Q = 1.0             !< PPFD (umol/m^2/s)
+    real :: g_bl = 1.0          !< Boundary layer conductance to H2O vapour (micromol m-2 PLA s-1)
+    real :: g_sto_0 = 1.0       !< Closed stomata conductance (umol/m^2/s)
+    real :: m = 1.0             !< Species-specific sensitivity to An (dimensionless)
+    real :: V_cmax_25 = 1.0     !< Maximum catalytic rate at 25 degrees (umol/m^2/s)
+    real :: J_max_25 = 1.0      !< Maximum rate of electron transport at 25 degrees (umol/m^2/s)
+    real :: D_0 = 1.0           !< "The VPD at which g_sto is reduced by a factor of 2" (Pa) (Leuning et al. 1998)
+    real :: O3 = 1.0
+    real :: td = 1.0
+    integer :: dd = 1
+    integer :: hr = 1
+
+    ! IN AND OUT
+    real, dimension(366) :: fO3_h_1_hist
+    real, dimension(366) :: fO3_d_hist
+    real, dimension(366) :: daily_thermal_temperatures
+    real :: O3up_acc_out
+
+    ! OUTPUTS
+
+    real :: gsto_final   !< Output: Raw photosynthesis-based stomatal conductance (umol m-2 s-1)
+    real :: pngsto_An    !< Output: net CO2 assimilation (umol m-2 s-1)
+    real :: pngsto_Ac
+    real :: pngsto_Aj
+    real :: pngsto_Ap
+    real :: pngsto_R_d
+    real :: O3up_out
+    real :: fO3_h_out
+    real :: fO3_d_out
+
+    ! Set vars
+    pgc%g_sto_0 = 20000.0
+    pgc%m = 8.12
+    pgc%v_cmax_25 = 180.0
+    pgc%j_max_25 = 400.0
+
+    season%growing_season_method = "constant"
+    season%SGS = 118
+    season%EGS = 210
+
+    season%accumulation_period_method = "constant"
+    season%Astart = 153
+    season%Aend = 208
+
+    ! season%height_method = "constant"
+    ! season%height = 1.0
+
+    ! season%LAI_method = "day PLF"
+    season%LAI_a = 0.0
+    season%LAI_b = 3.5
+    season%LAI_c = 3.5
+    season%LAI_d = 0.0
+    season%LAI_1 = 21
+    season%LAI_2 = 21
+
+    season%SAI_method = "wheat"
 
 
-  call farquhar_photosynthesis_2(pgc, season, Tleaf_C, c_a, e_a, Q, g_bl, &
-                                g_sto_0, m, V_cmax_25, J_max_25, D_0, O3, td, dd, hr, &
-                                fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
-                                gsto_final, pngsto_An, pngsto_Ac, &
-                                pngsto_Aj, pngsto_Ap, O3up_out, O3up_acc_out, &
-                                fO3_h_out, fO3_d_out, pngsto_R_d)
-
-  @assertEqual(1.36218476, gsto_final, 'gsto_final')
-  @assertEqual(-0.0709027424, pngsto_An, 'pngsto_An')
-  @assertEqual(0, pngsto_Ac, 'pngsto_Ac')
-  @assertEqual(0.0433355756, pngsto_Aj, 'pngsto_Aj')
-  @assertEqual(0.0434980951, pngsto_Ap, 'pngsto_Ap')
-  @assertEqual(0.0709027424, pngsto_R_d, 'pngsto_R_d')
-  @assertEqual(1.26683187, O3up_out, 'O3up_out')
-  @assertEqual(1.0, fO3_h_out, 'fO3_h_out')
-  @assertEqual(0.0, fO3_d_out, 'fO3_d_out')
 
 
-end subroutine DO3SE_Photosynthesis_far_test
+  ! ================ FULL farquhar_photosynthesis_2 TEST ==================
+
+    dd = 200
+
+    call farquhar_photosynthesis_2(pgc, season, Tleaf_C, c_a, e_a, Q, g_bl, &
+                                  g_sto_0, m, V_cmax_25, J_max_25, D_0, O3, td, dd, hr, &
+                                  fO3_h_1_hist, fO3_d_hist, daily_thermal_temperatures, &
+                                  gsto_final, pngsto_An, pngsto_Ac, &
+                                  pngsto_Aj, pngsto_Ap, O3up_out, O3up_acc_out, &
+                                  fO3_h_out, fO3_d_out, pngsto_R_d)
+
+    @assertEqual(1.60806298, gsto_final, 'far_2-gsto_final')
+    @assertEqual(-0.0709027424, pngsto_An, 'far_2-pngsto_An')
+    @assertEqual(0, pngsto_Ac, 'far_2-pngsto_Ac')
+    @assertEqual(0.0433349609, pngsto_Aj, 'far_2-pngsto_Aj')
+    @assertEqual(0.0434980951, pngsto_Ap, 'far_2-pngsto_Ap')
+    @assertEqual(0.0709027424, pngsto_R_d, 'far_2-pngsto_R_d')
+    @assertEqual(1.49549854, O3up_out, 'far_2-O3up_out')
+    @assertEqual(1.0, fO3_h_out, 'far_2-fO3_h_out')
+    @assertEqual(0.0, fO3_d_out, 'far_2-fO3_d_out')
+
+
+
+
+  end subroutine far_test
+
+! module DO3SE_Photosynthesis_far_test
