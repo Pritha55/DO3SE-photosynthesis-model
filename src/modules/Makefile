@@ -16,6 +16,7 @@ build:
 	$(MAKE) -C util all
 	$(MAKE) -C config all
 	$(MAKE) -C resistance all
+	# $(MAKE) -C met all
 	$(MAKE) -C photosynthesis all
 	@echo ---------------------------------------------------------
 
@@ -32,4 +33,5 @@ clean:
 	$(MAKE) -C util clean
 	$(MAKE) -C config clean
 	$(MAKE) -C resistance clean
+	# $(MAKE) -C met clean
 	$(MAKE) -C photosynthesis clean

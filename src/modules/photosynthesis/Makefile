@@ -35,7 +35,7 @@ libsut.a: $(OBJS)
 
 # ==== ======================================================DEFINE TESTS ==== #
 # Define Tests and their dependencies
-tests: main_tests far_tests
+tests: photosynthesis_tests
 # Get pFUnit
 LATEST_PFUNIT_DIR := $(lastword $(shell echo $(wildcard $(PFUNIT_DIR)/PFUNIT-4.*) | xargs -n1 | sort -V))
 include $(LATEST_PFUNIT_DIR)/include/PFUNIT.mk
@@ -43,21 +43,10 @@ include $(LATEST_PFUNIT_DIR)/include/PFUNIT.mk
 OTHER_LIBRARIES = -L../photosynthesis -L../constants -L../config -L../util -L../resistance -lsut
 
 # **run_tests**
-main_tests_TESTS := DO3SE_Photosynthesis_test.pf
-main_tests_OTHER_LIBRARIES := $(OTHER_LIBRARIES)
+photosynthesis_tests_TESTS := DO3SE_Photosynthesis_test.pf DO3SE_Photosynthesis_far_test.pf
+photosynthesis_tests_OTHER_LIBRARIES := $(OTHER_LIBRARIES)
 
-$(eval $(call make_pfunit_test,main_tests))
-
-far_tests_TESTS := DO3SE_Photosynthesis_far_test.pf
-far_tests_OTHER_LIBRARIES := $(OTHER_LIBRARIES)
-
-$(eval $(call make_pfunit_test,far_tests))
-
-# # **run_tests**
-#  DO3SE_Photosynthesis_test_TESTS := DO3SE_Photosynthesis_test.pf
-#  DO3SE_Photosynthesis_test_OTHER_LIBRARIES := -L. -lsut
-
-# $(eval $(call make_pfunit_test, DO3SE_Photosynthesis_test))
+$(eval $(call make_pfunit_test,photosynthesis_tests))
 
 
 # ==== CLEAN UP ==== #
