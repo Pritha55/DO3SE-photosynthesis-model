@@ -7,10 +7,10 @@ module DO3SE_Photosynthesis_mocks
     public
 
     contains
-      pure function saturated_vapour_pressure(Tleaf_C) RESULT(j)
-          real, intent(in) :: Tleaf_C ! input
-        real             :: j ! output
-        j = 1
+      pure real function saturated_vapour_pressure(Ts_C)
+        real, intent(in) :: Ts_C    !< Surface air temperature (degrees C)
+
+        saturated_vapour_pressure = 0.611 * exp(17.27 * Ts_C / (Ts_C + 237.3))
 
       end function saturated_vapour_pressure
 
