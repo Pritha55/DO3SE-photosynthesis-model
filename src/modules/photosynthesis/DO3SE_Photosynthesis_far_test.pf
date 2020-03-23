@@ -1,63 +1,82 @@
-  ! @test
-  ! subroutine get_co2_concentration_in_stomata_test()
+  @test
+  subroutine get_co2_concentration_in_stomata_test()
 
-  !   use funit
+    use funit
 
-  !   ! use DO3SE_Photosynthesis_ml
-  !   use DO3SE_Photosynthesis_far_ml
-  !   use DO3SE_ConfigTypes_ml
+    ! use DO3SE_Photosynthesis_ml
+    use DO3SE_Photosynthesis_far_ml
+    use DO3SE_ConfigTypes_ml
 
-  !   implicit none
+    implicit none
 
-  !   real, dimension(366) :: fO3_h_1_hist
-  !   real, dimension(366) :: fO3_d_hist
-  !   real, dimension(366) :: daily_thermal_temperatures
+    real, dimension(366) :: fO3_h_1_hist
+    real, dimension(366) :: fO3_d_hist
+    real, dimension(366) :: daily_thermal_temperatures
 
-  !   real :: g_sto                           !two sided stomatal conduct.,vapour [micro mol/(m^2s)]
-  !   real :: A_n                             !netto assimilation rate            [micro mol/(m^2*s)]
-  !   real :: A_c                             !Rub. activity. lim. ass. rate      [micro mol/(m^2*s)]
-  !   real :: A_j                             !electr. transp. lim. ass. rate     [micro mol/(m^2*s)]
-  !   real :: A_p
-  !   real :: R_d                             !day respiration rate               [micro mol/(m^2*s)]
-  !   real :: O3up
-  !   real :: fO3_d
-  !   real :: fO3_h
+    real :: g_sto                           !two sided stomatal conduct.,vapour [micro mol/(m^2s)]
+    real :: A_n                             !netto assimilation rate            [micro mol/(m^2*s)]
+    real :: A_c                             !Rub. activity. lim. ass. rate      [micro mol/(m^2*s)]
+    real :: A_j                             !electr. transp. lim. ass. rate     [micro mol/(m^2*s)]
+    real :: A_p
+    real :: O3up
+    real :: fO3_d
+    real :: fO3_h
 
-  !   ! ================ get_co2_concentration_in_stomata TEST ==================
-  !   call get_co2_concentration_in_stomata(&
-  !   c_i_start=0.0, &
-  !   c_a=1.0, &
-  !   e_a=1.0, &
-  !   g_bl=1.0, &
-  !   g_sto_0=1.0, &
-  !   m=1.0, &
-  !   D_0=1.0, &
-  !   O3=1.0, &
-  !   dd=1, &
-  !   O3up_acc_out=1.0, &
-  !   fO3_h_1_hist=fO3_h_1_hist, &
-  !   fO3_d_hist=fO3_d_hist, &
-  !   g_sto=g_sto, &
-  !   A_n=A_n, &
-  !   A_c=A_c, &
-  !   A_j=A_j, &
-  !   A_p=A_p, &
-  !   R_d=R_d, &
-  !   O3up=O3up, &
-  !   fO3_d=fO3_d, &
-  !   fO3_h=fO3_h)
 
-  !   ! Check variable outputs
-  !   @assertEqual(1.60806298, g_sto, 'get_co2-g_sto')
-  !   @assertEqual(1.60806298, A_n, 'get_co2-A_n')
-  !   @assertEqual(1.60806298, A_c, 'get_co2-A_c')
-  !   @assertEqual(1.60806298, A_j, 'get_co2-A_j')
-  !   @assertEqual(1.60806298, A_p, 'get_co2-A_p')
-  !   @assertEqual(1.60806298, R_d, 'get_co2-R_d')
-  !   @assertEqual(1.60806298, O3up, 'get_co2-O3up')
-  !   @assertEqual(1.60806298, fO3_d, 'get_co2-fO3_d')
-  !   @assertEqual(1.60806298, fO3_h, 'get_co2-fO3_h')
-  ! end subroutine get_co2_concentration_in_stomata_test
+
+    real :: t_lma = 1.0
+    real :: t_lse = 1.0
+    real :: Gamma_star = 1.0
+
+
+    ! ================ get_co2_concentration_in_stomata TEST ==================
+    call get_co2_concentration_in_stomata(&
+    c_i_start=0.0, &
+    c_a=1.0, &
+    e_a=1.0, &
+    g_bl=1.0, &
+    g_sto_0=1.0, &
+    m=1.0, &
+    D_0=1.0, &
+    O3=1.0, &
+    dd=1, &
+    O3up_acc_out=1.0, &
+    e_sat_i=1.0, &
+    fO3_h_1_hist=fO3_h_1_hist, &
+    fO3_d_hist=fO3_d_hist, &
+    V_cmax=1.0, &
+    J=1.0, &
+    Gamma=1.0, &
+    R_d=1.0, &
+    K_C=1.0, &
+    K_O=1.0, &
+    t_l=1.0, &
+    t_lem=1.0, &
+    t_lep=1.0, & ! << Inputs
+    t_lse=t_lse, &
+    t_lma=t_lma, &
+    Gamma_star=Gamma_star, & ! << Inouts
+
+    g_sto=g_sto, &
+    A_n=A_n, &
+    A_c=A_c, &
+    A_j=A_j, &
+    A_p=A_p, &
+    O3up=O3up, &
+    fO3_d=fO3_d, &
+    fO3_h=fO3_h)
+
+    ! Check variable outputs
+    ! TODO: Above variables need sanity checking to see what normal outputs should be
+    @assertEqual(-729925.938, g_sto, 'far-get_co2-g_sto')
+    @assertEqual(-0.750000715, A_n, 'get_co2-A_n')
+    @assertEqual(0.999793708, A_c, 'get_co2-A_c')
+    @assertEqual(0.249999270, A_j, 'get_co2-A_j')
+    @assertEqual(0.500000000, A_p, 'get_co2-A_p')
+    @assertEqual(-678831.125, O3up, 'get_co2-O3up')
+    @assertEqual(1.0000000, fO3_d, 'get_co2-fO3_d')
+    @assertEqual(1.0000000, fO3_h, 'get_co2-fO3_h')
+  end subroutine get_co2_concentration_in_stomata_test
 
   @test
   subroutine far_test()
