@@ -34,14 +34,14 @@ subroutine temp_dep_inhibit_test()
     use DO3SE_Photosynthesis_helpers_ml
     use DO3SE_ConfigTypes_ml
 
-    real :: P, K_C, K_O, R_d
+    real :: P, V_cmax, J_max
 
     P = temp_dep_inhibit(42.75, T0 + 25, 73637.0, 149252.0, 486.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
     V_cmax = temp_dep_inhibit(38.0, T0 + 25, 73637.0, 149252.0, 486.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
-    ! J_max = temp_dep_inhibit(75, T0 + 25, 50300, 152044, 495, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
+    J_max = temp_dep_inhibit(75.0, T0 + 25, 50300.0, 152044.0, 495.0, T0 + 20, sqrt(0.25 * 1.22 + 6.0 - (-0.706)))
 
     @assertEqual(8.74348640, P, 'temp_dep_inhibit_test-P')
     @assertEqual(7.77198792, V_cmax, 'temp_dep_inhibit_test-V_cmax')
-    ! @assertEqual(7.77198792, J_max, 'temp_dep_inhibit_test-J_max')
+    @assertEqual(25.3844395, J_max, 'temp_dep_inhibit_test-J_max')
 
 end subroutine temp_dep_inhibit_test

@@ -21,11 +21,9 @@
     real :: fO3_d
     real :: fO3_h
 
-
-
-    real :: t_lma = 1.0
-    real :: t_lse = 1.0
-    real :: Gamma_star = 1.0
+    real :: t_lma = 12.0 ! < ??
+    real :: t_lse = 12.0 ! < ??
+    real :: Gamma_star = 18.8789978 ! value taken from helpers temp_dep test
 
     integer :: i
     ! Set vars
@@ -39,24 +37,24 @@
     ! ================ get_co2_concentration_in_stomata TEST ==================
     call get_co2_concentration_in_stomata(&
     c_i_start=0.0, &
-    c_a=1.0, &
+    c_a=391.0, &
     e_a=1.0, &
     g_bl=1.0, &
-    g_sto_0=1.0, &
-    m=1.0, &
-    D_0=1.0, &
+    g_sto_0=20000.0, &
+    m=8.12, &
+    D_0=1.0, & ! ?
     O3=1.0, &
     dd=1, &
     O3up_acc_out=1.0, &
     e_sat_i=1.0, &
     fO3_h_1_hist=fO3_h_1_hist, &
     fO3_d_hist=fO3_d_hist, &
-    V_cmax=1.0, &
-    J=1.0, &
-    Gamma=1.0, &
-    R_d=1.0, &
-    K_C=1.0, &
-    K_O=1.0, &
+    V_cmax=7.77198792, &
+    J=0.2996420725664153, &
+    Gamma=-166.83920, &
+    R_d=128.840134, &
+    K_C=72.7879791, & ! value taken from helpers temp_dep test
+    K_O=184.499786, & ! value taken from helpers temp_dep test
     t_l=1.0, &
     t_lem=1.0, &
     t_lep=1.0, & ! << Inputs
@@ -75,9 +73,9 @@
 
     ! Check variable outputs
     ! TODO: Above variables need sanity checking to see what normal outputs should be
-    @assertEqual(-729925.938, g_sto, 'get_co2-g_sto')
-    @assertEqual(-0.750000715, A_n, 'get_co2-A_n')
-    @assertEqual(0.999793708, A_c, 'get_co2-A_c')
+    @assertEqual(-1404007.00, g_sto, 'get_co2-g_sto')
+    @assertEqual(-128.590134, A_n, 'get_co2-A_n')
+    @assertEqual(7.77197981, A_c, 'get_co2-A_c')
     @assertEqual(0.249999270, A_j, 'get_co2-A_j')
     @assertEqual(0.500000000, A_p, 'get_co2-A_p')
     @assertEqual(-678831.125, O3up, 'get_co2-O3up')
