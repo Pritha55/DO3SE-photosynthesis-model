@@ -115,6 +115,7 @@ subroutine DO3SE_Photosynthesis_test()
   ! call get_command_argument(1, ddin)
   ! ! dd = ichar(ddin)
   ! read (ddin,'(I10)') dd
+  dd = 150
   hr = 10
 
 
@@ -126,9 +127,9 @@ subroutine DO3SE_Photosynthesis_test()
   Tleaf_C, A_n, Canopy_A_n, A_c, A_j, A_p, O3up, &
   O3up_acc, fO3_h, fO3_d, R_d, g_sto, g_sv, g_bv)
 
-  @assertEqual(84.9395599, g_sto, 'demo test')
+  @assertEqual(84.8432693, g_sto, 'gsto_pn - g_sto - dd 150')
 
-  dd = 100
+  dd = 200
 
   call gsto_pn(pgc, season, V_cmax_25, J_max_25, D_0, &
   LAI, PARsun, PARshade, sinB, &
@@ -138,6 +139,6 @@ subroutine DO3SE_Photosynthesis_test()
   Tleaf_C, A_n, Canopy_A_n, A_c, A_j, A_p, O3up, &
   O3up_acc, fO3_h, fO3_d, R_d, g_sto, g_sv, g_bv)
 
-  @assertEqual(84.9395599, g_sto, 'demo test')
+  @assertEqual(84.8432693, g_sto, 'gsto_pn - g_sto - dd 200')
 
 end subroutine DO3SE_Photosynthesis_test
