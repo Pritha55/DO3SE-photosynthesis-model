@@ -37,13 +37,13 @@
     ! ================ get_co2_concentration_in_stomata TEST ==================
     call get_co2_concentration_in_stomata(&
     c_i_start=0.0, &
-    c_a=391.0, &
-    e_a=1.0, &
-    g_bl=1.0, &
+    c_a=391.0, & !<< CO2
+    e_a=1.0, & ! eact Ambient vapour pressure (kPa)
+    g_bl=0.05, &
     g_sto_0=20000.0, &
-    m=8.12, &
-    D_0=1.0, & ! ?
-    O3=1.0, &
+    m=8.12, & !< Species-specific sensitivity to An (dimensionless)
+    D_0=8.0, & ! Taken from VPD crit
+    O3=1.0, & !?
     dd=1, &
     O3up_acc_out=1.0, &
     e_sat_i=1.0, &
@@ -55,9 +55,9 @@
     R_d=128.840134, &
     K_C=72.7879791, & ! value taken from helpers temp_dep test
     K_O=184.499786, & ! value taken from helpers temp_dep test
-    t_l=1.0, &
-    t_lem=1.0, &
-    t_lep=1.0, & ! << Inputs
+    t_l=0.1, &
+    t_lem=0.1, &
+    t_lep=0.1, & ! << Inputs
     t_lse=t_lse, &
     t_lma=t_lma, &
     Gamma_star=Gamma_star, & ! << Inouts
@@ -71,14 +71,17 @@
     fO3_d=fO3_d, &
     fO3_h=fO3_h)
 
+    print *, "get_co2_concentration_in_stomata vars start"
+    print *, g_sto, A_n, A_c, A_j, A_p, O3up, fO3_d, fO3_h
+    print *, "get_co2_concentration_in_stomata vars end"
     ! Check variable outputs
     ! TODO: Above variables need sanity checking to see what normal outputs should be
-    @assertEqual(-1404007.00, g_sto, 'get_co2-g_sto')
-    @assertEqual(-128.590134, A_n, 'get_co2-A_n')
-    @assertEqual(7.77197981, A_c, 'get_co2-A_c')
-    @assertEqual(0.249999270, A_j, 'get_co2-A_j')
-    @assertEqual(0.500000000, A_p, 'get_co2-A_p')
-    @assertEqual(-678831.125, O3up, 'get_co2-O3up')
+    @assertEqual(-235891.359, g_sto, 'get_co2-g_sto')
+    @assertEqual(-128.765228, A_n, 'get_co2-A_n')
+    @assertEqual(7.77198744, A_c, 'get_co2-A_c')
+    @assertEqual(7.49105215E-02, A_j, 'get_co2-A_j')
+    @assertEqual(3.88599396, A_p, 'get_co2-A_p')
+    @assertEqual(-219378.969, O3up, 'get_co2-O3up')
     @assertEqual(1.0000000, fO3_d, 'get_co2-fO3_d')
     @assertEqual(1.0000000, fO3_h, 'get_co2-fO3_h')
   end subroutine get_co2_concentration_in_stomata_test
@@ -98,16 +101,16 @@
     type(pngstoconfig_t) :: pgc   !< Photosynthesis gsto parameters
     type(season_t) :: season
     real :: Tleaf_C = 1.0       !< Leaf temperature (degrees C)
-    real :: c_a = 1.0           !< CO2 concentration (ppm)
+    real :: c_a = 391.0           !< CO2 concentration (ppm)
     real :: e_a = 1.0           !< Ambient vapour pressure (Pa)
-    real :: Q = 1.0             !< PPFD (umol/m^2/s)
-    real :: g_bl = 1.0          !< Boundary layer conductance to H2O vapour (micromol m-2 PLA s-1)
-    real :: g_sto_0 = 1.0       !< Closed stomata conductance (umol/m^2/s)
-    real :: m = 1.0             !< Species-specific sensitivity to An (dimensionless)
-    real :: V_cmax_25 = 1.0     !< Maximum catalytic rate at 25 degrees (umol/m^2/s)
-    real :: J_max_25 = 1.0      !< Maximum rate of electron transport at 25 degrees (umol/m^2/s)
-    real :: D_0 = 1.0           !< "The VPD at which g_sto is reduced by a factor of 2" (Pa) (Leuning et al. 1998)
-    real :: O3 = 1.0
+    real :: Q = 1.0             !< PARsun PPFD (umol/m^2/s)
+    real :: g_bl = 0.05          !< Boundary layer conductance to H2O vapour (micromol m-2 PLA s-1)
+    real :: g_sto_0 = 1000       !< Closed stomata conductance (umol/m^2/s)
+    real :: m = 8.12            !< Species-specific sensitivity to An (dimensionless)
+    real :: V_cmax_25 = 180.0     !< Maximum catalytic rate at 25 degrees (umol/m^2/s)
+    real :: J_max_25 = 400      !< Maximum rate of electron transport at 25 degrees (umol/m^2/s)
+    real :: D_0 = 8.0           !< "The VPD at which g_sto is reduced by a factor of 2" (Pa) (Leuning et al. 1998)
+    real :: O3 = 53.0
     real :: td = 1.0
     integer :: dd = 1
     integer :: hr = 1
@@ -139,7 +142,7 @@
       fO3_d_hist(i) = 0.1
     end do
 
-    pgc%g_sto_0 = 20000.0
+    pgc%g_sto_0 = 2000.0
     pgc%m = 8.12
     pgc%v_cmax_25 = 180.0
     pgc%j_max_25 = 400.0
@@ -170,7 +173,7 @@
 
   ! ================ FULL farquhar_photosynthesis_2 TEST ==================
 
-    dd = 200
+    dd = 150
 
     call farquhar_photosynthesis_2(pgc, season, Tleaf_C, c_a, e_a, Q, g_bl, &
                                   g_sto_0, m, V_cmax_25, J_max_25, D_0, O3, td, dd, hr, &
@@ -179,14 +182,20 @@
                                   pngsto_Aj, pngsto_Ap, O3up_out, O3up_acc_out, &
                                   fO3_h_out, fO3_d_out, pngsto_R_d)
 
+
+    print *, "  \n farquhar_photosynthesis_2 vars start   \n "
+    print *, gsto_final, pngsto_An, pngsto_Ac, pngsto_Aj, pngsto_Ap, pngsto_R_d, O3up_out, fO3_h_out, fO3_d_out
+    print *, "  \n farquhar_photosynthesis_2 vars END"
+
+
     ! @assertEqual(25.0, daily_thermal_temperatures(dd), 'far_2-temp')
-    @assertEqual(1.60806298, gsto_final, 'far_2-gsto_final')
-    @assertEqual(-0.0709027424, pngsto_An, 'far_2-pngsto_An')
-    @assertEqual(0, pngsto_Ac, 'far_2-pngsto_Ac')
-    @assertEqual(0.0433349609, pngsto_Aj, 'far_2-pngsto_Aj')
-    @assertEqual(0.0434980951, pngsto_Ap, 'far_2-pngsto_Ap')
-    @assertEqual(0.0709027424, pngsto_R_d, 'far_2-pngsto_R_d')
-    @assertEqual(1.49549854, O3up_out, 'far_2-O3up_out')
+    @assertEqual(-522.112671, gsto_final, 'far_2-gsto_final')
+    @assertEqual(-7.09027424E-02, pngsto_An, 'far_2-pngsto_An')
+    @assertEqual(0.0, pngsto_Ac, 'far_2-pngsto_Ac')
+    @assertEqual(7.49702156E-02, pngsto_Aj, 'far_2-pngsto_Aj')
+    @assertEqual(7.82965708, pngsto_Ap, 'far_2-pngsto_Ap')
+    @assertEqual(7.09027424E-02, pngsto_R_d, 'far_2-pngsto_R_d')
+    @assertEqual(-25734.9336, O3up_out, 'far_2-O3up_out')
     @assertEqual(1.0, fO3_h_out, 'far_2-fO3_h_out')
     @assertEqual(0.100000007E-01, fO3_d_out, message='far_2-fO3_d_out', tolerance=0.1E-10)
 
